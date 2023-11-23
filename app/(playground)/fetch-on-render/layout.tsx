@@ -5,7 +5,6 @@ export default function Layout({
   example,
 }: {
   children: React.ReactNode;
-  code: React.ReactNode;
   example: React.ReactNode;
 }) {
   return (
