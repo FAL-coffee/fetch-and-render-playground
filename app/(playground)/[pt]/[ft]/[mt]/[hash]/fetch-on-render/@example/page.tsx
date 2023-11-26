@@ -1,37 +1,17 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+
+import { Params, User, Message } from "@/src/types";
+import { parseWaitTime } from "@/src/utils";
 
 import { Profile } from "@/app/(playground)/_components/Profile";
 import { FollowerList } from "@/app/(playground)/_components/FollowerList";
 import { MessageList } from "@/app/(playground)/_components/MessageList";
 import { FetchControl } from "@/app/(playground)/_components/FetchControl";
 
-type User = {
-  id: number;
-  name: string;
-  age: number;
-  image: string;
-  comment: string;
-};
-
-type Message = {
-  id: number;
-  text: string;
-};
-
-const parseWaitTime = (value: string): number => {
-  const parsed = Number(value);
-  if (Number.isNaN(parsed)) {
-    return 1;
-  }
-  if (parsed < 1) return 1;
-  return parsed;
-};
-
 export default function Page() {
-  const params = useParams();
+  const params = useParams<Params>();
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,10 +20,10 @@ export default function Page() {
   const [users, setUsers] = useState<User[]>([]);
 
   // 取得APIがレスポンスを行う秒数をクエリパラメータから取得
-  const fetchProfileWaitTimeStr = params.pt as string;
-  const fetchFollowersWaitTImeStr = params.ft as string;
-  const fetchMessagesWaitTimeStr = params.mt as string;
-  const hash = params.hash as string;
+  const fetchProfileWaitTimeStr = params.pt;
+  const fetchFollowersWaitTImeStr = params.ft;
+  const fetchMessagesWaitTimeStr = params.mt;
+  const hash = params.hash;
 
   const fetchData = async () => {
     setIsLoading(true);

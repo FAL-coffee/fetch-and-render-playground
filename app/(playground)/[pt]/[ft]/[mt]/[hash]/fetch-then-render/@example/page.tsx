@@ -1,38 +1,12 @@
+import { Params, User, Message } from "@/src/types";
+import { parseWaitTime } from "@/src/utils";
+
 import { Profile } from "@/app/(playground)/_components/Profile";
 import { FollowerList } from "@/app/(playground)/_components/FollowerList";
 import { MessageList } from "@/app/(playground)/_components/MessageList";
 import { FetchControl } from "@/app/(playground)/_components/FetchControl";
 
 import { FetchAndRenderTimingInfo } from "./_components/FetchAndRenderTimingInfo";
-
-type Params = {
-  pt?: string;
-  ft?: string;
-  mt?: string;
-  hash?: string;
-};
-
-type User = {
-  id: number;
-  name: string;
-  age: number;
-  image: string;
-  comment: string;
-};
-
-type Message = {
-  id: number;
-  text: string;
-};
-
-const parseWaitTime = (value: string | undefined): number => {
-  const parsed = Number(value);
-  if (Number.isNaN(parsed)) {
-    return 1;
-  }
-  if (parsed < 1) return 1;
-  return parsed;
-};
 
 /**
  *

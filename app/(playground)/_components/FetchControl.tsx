@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+
+import { Params } from "@/src/types";
+import { parseWaitTime } from "@/src/utils";
+
 import { Card } from "@/app/_components/Card";
 import { RangeInput } from "@/app/_components/RangeInput";
 
@@ -11,22 +15,13 @@ type Props = {
   description?: string;
 };
 
-const parseWaitTime = (value: string | string[]): number => {
-  const parsed = Number(value);
-  if (Number.isNaN(parsed)) {
-    return 1;
-  }
-  if (parsed < 1) return 1;
-  return parsed;
-};
-
 export const FetchControl = ({
   basePath = "",
   isDisabled = false,
   description = "",
 }: Props) => {
   const router = useRouter();
-  const params = useParams();
+  const params = useParams<Params>();
 
   const fetchProfileWaitTimeStr = params.pt;
   const fetchFollowersWaitTImeStr = params.ft;

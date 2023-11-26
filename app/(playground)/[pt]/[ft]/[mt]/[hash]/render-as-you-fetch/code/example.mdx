@@ -1,0 +1,187 @@
+# Render-as-you-Fetch パターンの実装
+
+詳細な実装は<font color="blue">[ GitHub ](<https://github.com/FAL-coffee/fetch-and-render-playground/blob/main/app/(playground)/[pt]/[ft]/[mt]/[hash]/render-as-you-fetch/%40example>)</font>を参照ください
+
+<font color="blue">[← 説明に戻る](.)</font>
+
+<details>
+  <summary>Layoutファイル（Next.js^13~ ParallelRouteを使用）</summary>
+
+    ```tsx:render-as-you-fetch/layout.tsx
+    import Link from "next/link";
+
+    import { FetchControl } from "@/app/(playground)/_components/FetchControl";
+
+    export default function Layout({
+        children,
+        followerList,
+        messageList,
+        profile,
+    }: {
+        children: React.ReactNode;
+        followerList: React.ReactNode;
+        messageList: React.ReactNode;
+        profile: React.ReactNode;
+    }) {
+        return (
+            <div className="grid gap-y-6">
+                <Link href="/" className="flex items-center text-blue-600">
+                    ← TOPに戻る
+                </Link>
+                <section id="example">
+                    <div>
+                        <FetchControl basePath="render-as-you-fetch" />
+
+                        <div className="flex flex-col lg:flex-row lg:justify-evenly mt-5">
+                            {profile}
+                            <div className="border border-gray-400 my-4 lg:mx-8" />
+                            {messageList}
+                            <div className="border border-gray-400 my-4 lg:mx-8" />
+                            {followerList}
+                        </div>
+                        <div className="border border-gray-400 my-4" />
+                    </div>
+                </section>
+                <section id="description">{children}</section>
+            </div>
+        );
+    }
+    ```
+
+</details>
+
+<details>
+    <summary> プロフィール表示部 </summary>
+
+    ```tsx:page.tsx
+    import { Params, User } from "@/src/types";
+    import { parseWaitTime } from "@/src/utils";
+
+    import { Profile } from "@/app/(playground)/_components/Profile";
+
+    const fetchData = async ({
+        pt = 1,
+    }: {
+        pt?: number;
+    }): Promise<{
+        user: User;
+    }> => {
+        // サーバーサイドでfetchを行う場合、fetchの引数には絶対パスを指定する必要がある
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+        const response = await fetch(`${baseUrl}/api/user/1?pt=${pt}`, {
+            cache: "no-cache",
+        });
+        const user = await response.json();
+
+        return { user };
+    };
+
+    export default async function ProfilePage({ params }: { params: Params }) {
+        const pt = params.pt;
+        const profileWaitTime = parseWaitTime(pt);
+        const { user } = await fetchData({ pt: profileWaitTime });
+        return <Profile user={user} />;
+    }
+    ```
+
+    ```tsx:loading.tsx
+    import { Profile } from "@/app/(playground)/_components/Profile";
+
+    export default function ProfileLoading() {
+        return <Profile isLoading />;
+    }
+    ```
+
+</details>
+
+<details>
+    <summary> メッセージ表示部 </summary>
+
+    ```tsx:page.tsx
+    import { Params, Message } from "@/src/types";
+    import { parseWaitTime } from "@/src/utils";
+
+    import { MessageList } from "@/app/(playground)/_components/MessageList";
+
+    const fetchData = async ({
+        mt = 1,
+    }: {
+        mt?: number;
+    }): Promise<{
+        messages: Message[];
+    }> => {
+        // サーバーサイドでfetchを行う場合、fetchの引数には絶対パスを指定する必要がある
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+        const response = await fetch(`${baseUrl}/api/message?mt=${mt}`, {
+            cache: "no-cache",
+        });
+        const { messages } = await response.json();
+
+        return { messages };
+    };
+
+    export default async function MessageListPage({ params }: { params: Params }) {
+        const mt = params.mt;
+        const messageListWaitTime = parseWaitTime(mt);
+        const { messages } = await fetchData({ mt: messageListWaitTime });
+        return <MessageList messages={messages} />;
+    }
+    ```
+
+    ```tsx:loading.tsx
+    import { MessageList } from "@/app/(playground)/_components/MessageList";
+
+    export default function MessageListLoading() {
+        return <MessageList isLoading />;
+    }
+
+    ```
+
+</details>
+
+<details>
+    <summary> フォロワー表示部 </summary>
+
+    ```tsx:page.tsx
+    import { Params, User } from "@/src/types";
+    import { parseWaitTime } from "@/src/utils";
+
+    import { FollowerList } from "@/app/(playground)/_components/FollowerList";
+
+    const fetchData = async ({
+        ft = 1,
+    }: {
+        ft?: number;
+    }): Promise<{
+        users: User[];
+    }> => {
+        // サーバーサイドでfetchを行う場合、fetchの引数には絶対パスを指定する必要がある
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+        const response = await fetch(`${baseUrl}/api/user?ft=${ft}`, {
+            cache: "no-cache",
+        });
+        const { users } = await response.json();
+
+        return { users };
+    };
+
+    export default async function FollowerListPage({ params }: { params: Params }) {
+        const ft = params.ft;
+        const followerListWaitTime = parseWaitTime(ft);
+        const { users } = await fetchData({ ft: followerListWaitTime });
+        return <FollowerList users={users} />;
+    }
+    ```
+
+    ```tsx:loading.tsx
+    import { FollowerList } from "@/app/(playground)/_components/FollowerList";
+
+    export default function FollowerListLoading() {
+        return <FollowerList isLoading />;
+    }
+    ```
+
+</details>
