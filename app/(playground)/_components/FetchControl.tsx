@@ -1,11 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { Card } from "@/app/_components/Card";
 import { RangeInput } from "@/app/_components/RangeInput";
 
-const parseWaitTime = (value: string): number => {
+type Props = {
+  basePath?: string;
+  isDisabled?: boolean;
+  description?: string;
+};
+
+const parseWaitTime = (value: string | string[]): number => {
   const parsed = Number(value);
   if (Number.isNaN(parsed)) {
     return 1;
@@ -14,67 +20,73 @@ const parseWaitTime = (value: string): number => {
   return parsed;
 };
 
-export const FetchControl = () => {
+export const FetchControl = ({
+  basePath = "",
+  isDisabled = false,
+  description = "",
+}: Props) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const params = useParams();
 
-  const fetchProfileWaitTimeStr = decodeURIComponent(
-    searchParams.get("pt") || "1"
-  );
-  const fetchMessagesWaitTimeStr = decodeURIComponent(
-    searchParams.get("mt") || "1"
-  );
-  const fetchFollowersWaitTImeStr = decodeURIComponent(
-    searchParams.get("ft") || "1"
-  );
+  const fetchProfileWaitTimeStr = params.pt;
+  const fetchFollowersWaitTImeStr = params.ft;
+  const fetchMessagesWaitTimeStr = params.mt;
 
   const [fetchProfileWaitTime, setFetchProfileWaitTime] = useState(
     parseWaitTime(fetchProfileWaitTimeStr)
   );
-  const [fetchMessagesWaitTime, setFetchMessagesWaitTime] = useState(
-    parseWaitTime(fetchMessagesWaitTimeStr)
-  );
   const [fetchFollowersWaitTime, setFetchFollowersWaitTime] = useState(
     parseWaitTime(fetchFollowersWaitTImeStr)
+  );
+  const [fetchMessagesWaitTime, setFetchMessagesWaitTime] = useState(
+    parseWaitTime(fetchMessagesWaitTimeStr)
   );
 
   const refetch = () => {
     const random = Math.floor(Math.random() * 10000);
 
     router.push(
-      `?pt=${fetchProfileWaitTime}&mt=${fetchMessagesWaitTime}&ft=${fetchFollowersWaitTime}&hash=${random}`
+      `/${fetchProfileWaitTime}/${fetchFollowersWaitTime}/${fetchMessagesWaitTime}/${random}/${basePath}`
     );
   };
 
   return (
     <Card>
       <div className="p-8">
+        {description && <p className="mb-2">{description}</p>}
         <div className="mb-4">
-          <p>プロフィール取得APIがレスポンスを行う秒数を制御出来ます</p>
+          <p>プロフィール取得APIがレスポンスを行う秒数</p>
           <RangeInput
             value={fetchProfileWaitTime}
             onChange={setFetchProfileWaitTime}
+            isDisabled={isDisabled}
           />
         </div>
 
         <div className="mb-4">
-          <p>メッセージ取得APIがレスポンスを行う秒数を制御出来ます</p>
+          <p>メッセージ取得APIがレスポンスを行う秒数</p>
           <RangeInput
             value={fetchMessagesWaitTime}
             onChange={setFetchMessagesWaitTime}
+            isDisabled={isDisabled}
           />
         </div>
 
         <div className="mb-4">
-          <p>フォロワー取得APIがレスポンスを行う秒数を制御出来ます</p>
+          <p>フォロワー取得APIがレスポンスを行う秒数</p>
           <RangeInput
             value={fetchFollowersWaitTime}
             onChange={setFetchFollowersWaitTime}
+            isDisabled={isDisabled}
           />
         </div>
 
         <div className="flex justify-end">
-          <button className="btn btn-primary w-fit" onClick={refetch}>
+          <button
+            className="btn btn-primary w-fit"
+            disabled={isDisabled}
+            onClick={refetch}
+          >
             ReFetch
           </button>
         </div>

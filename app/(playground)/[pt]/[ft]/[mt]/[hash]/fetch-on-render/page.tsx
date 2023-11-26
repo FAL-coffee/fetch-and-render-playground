@@ -52,7 +52,7 @@ export default function Page() {
         </p>
 
         <Link
-          href="/fetch-on-render/code#Fetch-on-Render パターンの実装"
+          href="fetch-on-render/code#Fetch-on-Render パターンの実装"
           className="mt-3 flex items-center justify-end text-blue-600"
         >
           <svg
@@ -63,7 +63,7 @@ export default function Page() {
           >
             <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
           </svg>
-          実装を見る
+          実装を見る（モバイル端末では表示出来ない場合があります。）
         </Link>
       </div>
     </Card>

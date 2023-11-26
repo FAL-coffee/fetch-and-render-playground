@@ -9,7 +9,7 @@ export default function Home() {
       </h1>
 
       <div className="grid gap-y-6">
-        <Link href="/fetch-on-render">
+        <Link href="/1/1/1/0000/fetch-on-render">
           <Card clickable>
             <div className="card-body">
               <h2 className="card-title">Fetch-on-render</h2>
@@ -28,7 +28,7 @@ export default function Home() {
           </Card>
         </Link>
 
-        <Link href="/fetch-then-render" className="">
+        <Link href="/1/1/1/0000/fetch-then-render" className="">
           <Card clickable>
             <div className="card-body">
               <h2 className="card-title">Fetch-then-render</h2>
@@ -47,7 +47,7 @@ export default function Home() {
           </Card>
         </Link>
 
-        <Link href="/render-as-you-fetch" className="">
+        <Link href="/1/1/1/0000/render-as-you-fetch" className="">
           <Card clickable>
             <div className="card-body">
               <h2 className="card-title">Render-as-You-Fetch</h2>

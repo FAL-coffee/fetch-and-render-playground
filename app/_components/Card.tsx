@@ -1,9 +1,14 @@
 type Props = {
   children: React.ReactNode;
   clickable?: boolean;
+  className?: string;
 };
 
-export const Card = ({ children, clickable = false }: Props) => {
+export const Card = ({
+  children,
+  clickable = false,
+  className = "",
+}: Props) => {
   const borderStyleClass =
     "border-gray-300 dark:bg-gray-300 dark:border-gray-500";
 
@@ -13,7 +18,7 @@ export const Card = ({ children, clickable = false }: Props) => {
 
   return (
     <div
-      className={`card bg-white w-full border rounded-lg shadow ${borderStyleClass} ${hoverStyleClass}`}
+      className={`card bg-white w-full border rounded-lg shadow ${borderStyleClass} ${hoverStyleClass} ${className}`}
     >
       {children}
     </div>

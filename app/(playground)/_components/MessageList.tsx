@@ -1,12 +1,12 @@
 type Props = {
-  messages: {
+  messages?: {
     id: number;
     text: string;
   }[];
   isLoading?: boolean;
 };
 
-export const MessageList = ({ messages, isLoading = false }: Props) => {
+export const MessageList = ({ messages = [], isLoading = false }: Props) => {
   if (isLoading)
     return (
       <div>

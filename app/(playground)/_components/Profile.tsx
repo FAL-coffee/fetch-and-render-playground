@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 type Props = {
-  user: {
+  user?: {
     id: number;
     name: string;
     age: number;

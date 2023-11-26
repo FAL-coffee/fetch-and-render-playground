@@ -28,8 +28,12 @@ export const CodeBlock = ({ className, children = "" }: Props) => {
       </div>
       <style jsx>{`
         .code-block-wrapper {
+          width: 100%;
           font-size: 0.9rem;
           margin-bottom: 2rem;
+          @media only screen and (max-width: 770px) {
+            display: none;
+          }
         }
         .code-block-title {
           display: inline-block;

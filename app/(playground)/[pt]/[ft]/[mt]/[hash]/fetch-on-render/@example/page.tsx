@@ -1,14 +1,7 @@
-# Fetch-on-Render パターンの実装
-
-詳細な実装は[GitHub]()を参照ください
-
-[← 説明に戻る](/fetch-on-render)
-
-```tsx
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 import { Profile } from "@/app/(playground)/_components/Profile";
 import { FollowerList } from "@/app/(playground)/_components/FollowerList";
@@ -38,7 +31,7 @@ const parseWaitTime = (value: string): number => {
 };
 
 export default function Page() {
-  const searchParams = useSearchParams();
+  const params = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,17 +40,11 @@ export default function Page() {
   const [users, setUsers] = useState<User[]>([]);
 
   // 取得APIがレスポンスを行う秒数をクエリパラメータから取得
-  const fetchProfileWaitTimeStr = decodeURIComponent(
-    searchParams.get("pt") || "1"
-  );
-  const fetchFollowersWaitTImeStr = decodeURIComponent(
-    searchParams.get("ft") || "1"
-  );
-  const fetchMessagesWaitTimeStr = decodeURIComponent(
-    searchParams.get("mt") || "1"
-  );
+  const fetchProfileWaitTimeStr = params.pt as string;
+  const fetchFollowersWaitTImeStr = params.ft as string;
+  const fetchMessagesWaitTimeStr = params.mt as string;
+  const hash = params.hash as string;
 
-  // 取得処理
   const fetchData = async () => {
     setIsLoading(true);
 
@@ -90,12 +77,12 @@ export default function Page() {
     fetchProfileWaitTimeStr,
     fetchFollowersWaitTImeStr,
     fetchMessagesWaitTimeStr,
+    hash,
   ]);
 
   return (
     <div>
-      <div className="border border-gray-400 my-4" />
-      <FetchControl />
+      <FetchControl basePath="fetch-on-render" />
       <div className="flex flex-col lg:flex-row lg:justify-evenly mt-5">
         <Profile user={user} isLoading={isLoading} />
         <div className="border border-gray-400 my-4 lg:mx-8" />
@@ -103,7 +90,7 @@ export default function Page() {
         <div className="border border-gray-400 my-4 lg:mx-8" />
         <FollowerList users={users} isLoading={isLoading} />
       </div>
+      <div className="border border-gray-400 my-4" />
     </div>
   );
 }
-```

@@ -1,0 +1,134 @@
+import { Profile } from "@/app/(playground)/_components/Profile";
+import { FollowerList } from "@/app/(playground)/_components/FollowerList";
+import { MessageList } from "@/app/(playground)/_components/MessageList";
+import { FetchControl } from "@/app/(playground)/_components/FetchControl";
+
+import { FetchAndRenderTimingInfo } from "./_components/FetchAndRenderTimingInfo";
+
+type Params = {
+  pt?: string;
+  ft?: string;
+  mt?: string;
+  hash?: string;
+};
+
+type User = {
+  id: number;
+  name: string;
+  age: number;
+  image: string;
+  comment: string;
+};
+
+type Message = {
+  id: number;
+  text: string;
+};
+
+const parseWaitTime = (value: string | undefined): number => {
+  const parsed = Number(value);
+  if (Number.isNaN(parsed)) {
+    return 1;
+  }
+  if (parsed < 1) return 1;
+  return parsed;
+};
+
+/**
+ *
+ * @params pt: プロフィール取得APIのレスポンスを行う秒数。デフォルト値は1秒
+ * @params ft: フォロワー取得APIのレスポンスを行う秒数。デフォルト値は1秒
+ * @params mt: メッセージ取得APIのレスポンスを行う秒数。デフォルト値は1秒
+ *
+ * @returns
+ * {
+ *  user: User;
+ *  users: User[];
+ *  messages: Message[];
+ * }
+ */
+const fetchData = async ({
+  pt = 1,
+  ft = 1,
+  mt = 1,
+}: {
+  pt?: number;
+  ft?: number;
+  mt?: number;
+}): Promise<{
+  user: User;
+  users: User[];
+  messages: Message[];
+  startedAt: Date;
+}> => {
+  // サーバーサイドでfetchを行う場合、fetchの引数には絶対パスを指定する必要がある
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  // fetchDataの実行が開始された日時を取得
+  const startedAt = new Date();
+
+  const promises = [
+    fetch(`${baseUrl}/api/user/1?pt=${pt}`, { cache: "no-cache" }).then(
+      async (response) => {
+        const user = await response.json();
+        return user;
+      }
+    ),
+    fetch(`${baseUrl}/api/user?ft=${ft}`, { cache: "no-cache" }).then(
+      async (response) => {
+        const { users } = await response.json();
+        return users;
+      }
+    ),
+    fetch(`${baseUrl}/api/message?mt=${mt}`, { cache: "no-cache" }).then(
+      async (response) => {
+        const { messages } = await response.json();
+        return messages;
+      }
+    ),
+  ];
+
+  const [user, users, messages] = await Promise.all(promises);
+  return { user, users, messages, startedAt };
+};
+
+export default async function Page({ params }: { params: Params }) {
+  const { pt, ft, mt } = params;
+  const profileWaitTime = parseWaitTime(pt);
+  const followerWaitTime = parseWaitTime(ft);
+  const messageWaitTime = parseWaitTime(mt);
+
+  const { user, users, messages, startedAt } = await fetchData({
+    pt: profileWaitTime,
+    ft: followerWaitTime,
+    mt: messageWaitTime,
+  });
+
+  // データフェッチが開始されたタイミングを取得
+  const fetchStarted = startedAt;
+
+  // コンポーネントがマウントされたタイミングを取得
+  const rendered = new Date();
+
+  return (
+    <div>
+      <FetchControl basePath="fetch-then-render" />
+
+      <div className="my-2">
+        <FetchAndRenderTimingInfo
+          fetchStarted={fetchStarted}
+          rendered={rendered}
+        />
+      </div>
+
+      <div className="flex flex-col lg:flex-row lg:justify-evenly mt-5">
+        <Profile user={user} />
+        <div className="border border-gray-400 my-4 lg:mx-8" />
+        <MessageList messages={messages} />
+        <div className="border border-gray-400 my-4 lg:mx-8" />
+        <FollowerList users={users} />
+      </div>
+      <div className="border border-gray-400 my-4" />
+    </div>
+  );
+}

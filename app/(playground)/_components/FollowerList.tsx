@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 type Props = {
-  users: {
+  users?: {
     id: number;
     name: string;
     age: number;
@@ -11,7 +11,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-export const FollowerList = ({ users, isLoading = false }: Props) => {
+export const FollowerList = ({ users = [], isLoading = false }: Props) => {
   if (isLoading)
     return (
       <div className="min-w-fit">
