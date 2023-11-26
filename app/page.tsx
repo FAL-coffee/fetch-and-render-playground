@@ -13,10 +13,10 @@ export default function Home() {
           <Link href="/1/1/1/0000/fetch-on-render/example">
             <Card clickable>
               <div className="card-body">
-                <h2 className="card-title">Fetch-on-render</h2>
+                <h2 className="card-title">Fetch-on-Render</h2>
                 <div>
                   <p>
-                    Fetch-on-renderパターンでは、コンポーネントのレンダリング後にデータフェッチが行われます。
+                    Fetch-on-Renderパターンでは、コンポーネントのレンダリング後にデータフェッチが行われます。
                   </p>
                   <p>
                     この方法は、コンポーネントのマウント時にAPIからデータを取得し、取得後にUIを更新するため、ページの初期表示時に有用です。
@@ -32,10 +32,10 @@ export default function Home() {
           <Link href="/1/1/1/0000/fetch-then-render/example">
             <Card clickable>
               <div className="card-body">
-                <h2 className="card-title">Fetch-then-render</h2>
+                <h2 className="card-title">Fetch-then-Render</h2>
                 <div>
                   <p>
-                    Fetch-then-renderパターンでは、データフェッチを完了してからコンポーネントをレンダリングします。
+                    Fetch-then-Renderパターンでは、データフェッチを完了してからコンポーネントをレンダリングします。
                   </p>
                   <p>
                     このアプローチは、ページまたはコンポーネントがデータに依存している場合に適しており、データが利用可能になるまでUIの表示を遅延させます。
