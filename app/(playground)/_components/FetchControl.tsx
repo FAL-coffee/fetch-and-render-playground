@@ -41,7 +41,7 @@ export const FetchControl = ({
     const random = Math.floor(Math.random() * 10000);
 
     router.push(
-      `/${fetchProfileWaitTime}/${fetchFollowersWaitTime}/${fetchMessagesWaitTime}/${random}/${basePath}`
+      `/${fetchProfileWaitTime}/${fetchFollowersWaitTime}/${fetchMessagesWaitTime}/${random}/${basePath}/example`
     );
   };
 

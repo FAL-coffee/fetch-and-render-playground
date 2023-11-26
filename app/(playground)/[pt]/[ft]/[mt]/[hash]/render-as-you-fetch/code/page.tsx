@@ -1,20 +1,14 @@
 "use client";
 
 import { Card } from "@/app/_components/Card";
-import { CodeBlock } from "@/app/_components/CodeBlock";
+import mdxComponents from "@/app/_components/mdxComponent";
 import Example from "./example.mdx";
-
-const components = {
-  code: (props: JSX.IntrinsicAttributes & { children?: React.ReactNode }) => (
-    <CodeBlock {...props} />
-  ),
-};
 
 export default function Page() {
   return (
     <Card>
       <div className="card-body">
-        <Example components={components} />
+        <Example components={mdxComponents} />
       </div>
     </Card>
   );

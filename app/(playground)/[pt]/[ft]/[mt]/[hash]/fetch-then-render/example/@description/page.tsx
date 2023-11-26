@@ -2,13 +2,13 @@
 
 import { Card } from "@/app/_components/Card";
 import mdxComponents from "@/app/_components/mdxComponent";
-import Example from "./example.mdx";
+import Description from "./description.mdx";
 
 export default function Page() {
   return (
     <Card>
       <div className="card-body">
-        <Example components={mdxComponents} />
+        <Description components={mdxComponents} />
       </div>
     </Card>
   );
