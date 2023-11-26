@@ -41,7 +41,7 @@ export const Profile = ({ user, isLoading = false }: Props) => {
           />
         </div>
         <div className="flex flex-col gap-4">
-          <div className="h-4 w-20">
+          <div className="h-4">
             <span>{user.name}</span>
           </div>
           <div className="h-4 w-28">
