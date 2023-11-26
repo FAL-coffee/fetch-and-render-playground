@@ -4,42 +4,16 @@
 
 [説明に戻る](./example)
 
-```tsx app/(playground)/[pt]/[ft]/[mt]/[hash]/fetch-then-render/@example/page.tsx
+```tsx app/(playground)/[pt]/[ft]/[mt]/[hash]/fetch-then-render/example/page.tsx
+import { Params, User, Message } from "@/src/types";
+import { parseWaitTime } from "@/src/utils";
+
 import { Profile } from "@/app/(playground)/_components/Profile";
 import { FollowerList } from "@/app/(playground)/_components/FollowerList";
 import { MessageList } from "@/app/(playground)/_components/MessageList";
 import { FetchControl } from "@/app/(playground)/_components/FetchControl";
 
 import { FetchAndRenderTimingInfo } from "./_components/FetchAndRenderTimingInfo";
-
-type Params = {
-  pt?: string;
-  ft?: string;
-  mt?: string;
-  hash?: string;
-};
-
-type User = {
-  id: number;
-  name: string;
-  age: number;
-  image: string;
-  comment: string;
-};
-
-type Message = {
-  id: number;
-  text: string;
-};
-
-const parseWaitTime = (value: string | undefined): number => {
-  const parsed = Number(value);
-  if (Number.isNaN(parsed)) {
-    return 1;
-  }
-  if (parsed < 1) return 1;
-  return parsed;
-};
 
 /**
  *
@@ -134,38 +108,6 @@ export default async function Page({ params }: { params: Params }) {
         <MessageList messages={messages} />
         <div className="border border-gray-400 my-4 lg:mx-8" />
         <FollowerList users={users} />
-      </div>
-      <div className="border border-gray-400 my-4" />
-    </div>
-  );
-}
-```
-
-Colocation を利用し、loadingUI を表示する場合は以下のようなファイルを追加する
-
-```tsx app/(playground)/[pt]/[ft]/[mt]/[hash]/fetch-then-render/@example/loading.tsx
-import { Profile } from "@/app/(playground)/_components/Profile";
-import { FollowerList } from "@/app/(playground)/_components/FollowerList";
-import { MessageList } from "@/app/(playground)/_components/MessageList";
-import { FetchControl } from "@/app/(playground)/_components/FetchControl";
-
-import { FetchAndRenderTimingInfo } from "./_components/FetchAndRenderTimingInfo";
-
-export default async function Loading() {
-  return (
-    <div>
-      <FetchControl isDisabled />
-
-      <div className="my-2">
-        <FetchAndRenderTimingInfo isLoading />
-      </div>
-
-      <div className="flex flex-col lg:flex-row lg:justify-evenly mt-5">
-        <Profile isLoading />
-        <div className="border border-gray-400 my-4 lg:mx-8" />
-        <MessageList isLoading />
-        <div className="border border-gray-400 my-4 lg:mx-8" />
-        <FollowerList isLoading />
       </div>
       <div className="border border-gray-400 my-4" />
     </div>
