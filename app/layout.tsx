@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Footer } from "@/app/_components/Footer";
+import Head from "./head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
+      <Head />
       <body className={`${inter.className} h-screen`}>
         <div id="main-container" className="flex-grow">
           <main className="container mx-auto px-4 flex justify-center h-full">
