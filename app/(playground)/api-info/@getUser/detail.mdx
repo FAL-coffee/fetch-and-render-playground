@@ -1,0 +1,25 @@
+## Get User
+
+[/api/user/1](/api/user/1)
+
+プロフィール取得 API
+（具体的なリクエストとレスポンスの内容はスマホでは表示されません）
+
+```
+Request:
+{
+    pt: number // レスポンスを返却する時間をカスタム可能。単位は秒
+}
+
+Response:
+{
+    "id": 1,
+    "name": "John Doe",
+    "age": 20,
+    "comment": `Hello, I'm John Doe. I am passionate about technology and coding.
+      In my spare time, I enjoy hiking, photography, and reading.
+      I'm always looking for new challenges and opportunities to learn.
+      Feel free to reach out if you want to collaborate on a project!`,
+    "image": "/user/image1.jpg"
+}
+```
